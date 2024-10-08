@@ -16,11 +16,9 @@ contract CounterNFT {
         uint256[] memory ownerTokens = collectionNFT.getOwnerTokens(owner);
         uint256 length = ownerTokens.length;
 
-        if (length == 0) return 0;
-
-        for (uint256 i = 0; i < length; i++) {
+        for (uint256 i = 0; i < length; ++i) {
             if (isPrime(ownerTokens[i])) {
-                count++;
+                ++count;
             }
         }
     }
@@ -31,12 +29,26 @@ contract CounterNFT {
     /// @return True if the number is prime, false otherwise
     function isPrime(uint256 number) public pure returns (bool) {
         if (number < 2) return false;
-        if (number == 2) return true;
-        if (number & 1 == 0) return false;
+        if (number == 2 || number == 3) return true; // Directly return true for 2 and 3
+        if (number % 2 == 0) return false; // Check if number is even
 
-        for (uint256 i = 3; i * i <= number; i += 2) {
+        uint256 sqrtNum = sqrt(number); // Calculate square root once
+        for (uint256 i = 3; i <= sqrtNum; i += 2) {
             if (number % i == 0) return false;
         }
         return true;
+    }
+
+    /// @notice Calculates the integer square root of a given number using the Babylonian method.
+    /// @dev This function uses an iterative approach to approximate the square root.
+    /// @param x The number to calculate the square root of.
+    /// @return y The approximate integer square root of the given number.
+    function sqrt(uint256 x) internal pure returns (uint256 y) {
+        uint256 z = (x + 1) / 2;
+        y = x;
+        while (z < y) {
+            y = z;
+            z = (x / z + z) / 2;
+        }
     }
 }

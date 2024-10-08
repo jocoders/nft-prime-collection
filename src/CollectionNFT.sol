@@ -15,9 +15,7 @@ contract CollectionNFT is ERC721, ERC721Enumerable, ICollectionNFT {
     /// @param name_ The name of the NFT collection
     /// @param symbol_ The symbol of the NFT collection
     constructor(string memory name_, string memory symbol_) ERC721(name_, symbol_) {
-        uint256 max = MAX_SUPPLY + 1;
-
-        for (uint256 i = 1; i < max; ++i) {
+        for (uint256 i = 1; i <= MAX_SUPPLY; ++i) {
             _mint(msg.sender, i);
         }
     }
